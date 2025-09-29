@@ -1,0 +1,10 @@
+# Pasta de dados
+conjuntos/
+
+# Arquivos temporários
+*.tmp
+*.temp
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
