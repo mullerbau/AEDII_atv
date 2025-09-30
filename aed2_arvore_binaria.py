@@ -2,6 +2,23 @@ import random
 import time
 
 
+class Lista:
+    def __init__(self):
+        # cria uma lista vazia com o nome elementos
+        self.elementos = []
+    
+    def inserir(self, valor):
+        # insere o valor ao final da lista
+        self.elementos.append(valor)
+    
+    def buscar(self, valor):
+        # vai passando por cada elemento até achar o valor, ou acabar a lista
+        for elemento in self.elementos:
+            if elemento == valor:
+                return True  # retorna True se achou
+        return False  # retorna False se não achou
+
+
 class Node:
     # método construtor
     def __init__(self, valor):
