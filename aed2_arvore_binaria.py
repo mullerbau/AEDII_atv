@@ -18,6 +18,66 @@ class Lista:
                 return True  # retorna True se achou
         return False  # retorna False se não achou
 
+class Lista_otimizada:
+    def __init__(self):
+        # cria uma lista vazia com o nome elementos
+        self.elementos = []
+        self.ordenada = False
+
+    def inserir(self, valor):
+        # insere o valor na lista
+        self.elementos.append(valor)
+        self.ordenada = False
+
+    def _ordenar(self):
+        # implementação manual do merge sort
+        def merge_sort(lista):
+            if len(lista) <= 1:
+                return lista
+            
+            meio = len(lista) // 2
+            esquerda = merge_sort(lista[:meio])
+            direita = merge_sort(lista[meio:])
+            
+            # junta as duas metades ordenadas
+            resultado = []
+            i = j = 0
+            
+            while i < len(esquerda) and j < len(direita):
+                if esquerda[i] <= direita[j]:
+                    resultado.append(esquerda[i])
+                    i += 1
+                else:
+                    resultado.append(direita[j])
+                    j += 1
+            
+            # adicionar elementos restantes
+            resultado.extend(esquerda[i:])
+            resultado.extend(direita[j:])
+            return resultado
+        
+        self.elementos = merge_sort(self.elementos)
+
+    def buscar(self, valor):
+        # se a lista não estiver ordenada, ordena antes de buscar
+        if not self.ordenada:
+            self._ordenar()
+            self.ordenada = True
+
+        # busca binária
+        baixo = 0
+        alto = len(self.elementos) - 1
+        while baixo <= alto:
+            meio = (baixo + alto) // 2
+            if self.elementos[meio] == valor:
+                return True
+            elif self.elementos[meio] < valor:
+                baixo = meio + 1
+            else:
+                alto = meio - 1
+        return False
+
+
 
 class Node:
     def __init__(self, valor):
@@ -86,6 +146,66 @@ class Arvore:
         # retorna False se não achou
         return False
 
+
+# função para testar lista otimizada vs lista normal
+def testar_listas(arquivo):
+    # lê o arquivo
+    valores = []
+    with open(arquivo, 'r') as f:
+        for linha in f:
+            valores.append(int(linha.strip()))
+    
+    print(f"Testando {len(valores)} valores")
+    
+    # cria as estruturas
+    lista_normal = Lista()
+    lista_otimizada = Lista_otimizada()
+    
+    # teste construção
+    inicio = time.perf_counter()
+    for valor in valores:
+        lista_normal.inserir(valor)
+    print(f"Lista normal construção: {time.perf_counter() - inicio:.6f}s")
+    
+    inicio = time.perf_counter()
+    for valor in valores:
+        lista_otimizada.inserir(valor)
+    print(f"Lista otimizada construção: {time.perf_counter() - inicio:.6f}s")
+    
+    # testes de busca
+    valor_meio = valores[len(valores)//2]
+    valor_ultimo = valores[-1]
+    valor_inexistente = -999999
+    
+    # busca valor do meio
+    inicio = time.perf_counter()
+    lista_normal.buscar(valor_meio)
+    tempo_normal = time.perf_counter() - inicio
+    
+    inicio = time.perf_counter()
+    lista_otimizada.buscar(valor_meio)
+    tempo_otimizada = time.perf_counter() - inicio
+    print(f"Busca meio - Normal: {tempo_normal:.6f}s | Otimizada: {tempo_otimizada:.6f}s")
+    
+    # busca último valor
+    inicio = time.perf_counter()
+    lista_normal.buscar(valor_ultimo)
+    tempo_normal = time.perf_counter() - inicio
+    
+    inicio = time.perf_counter()
+    lista_otimizada.buscar(valor_ultimo)
+    tempo_otimizada = time.perf_counter() - inicio
+    print(f"Busca último - Normal: {tempo_normal:.6f}s | Otimizada: {tempo_otimizada:.6f}s")
+    
+    # busca valor inexistente
+    inicio = time.perf_counter()
+    lista_normal.buscar(valor_inexistente)
+    tempo_normal = time.perf_counter() - inicio
+    
+    inicio = time.perf_counter()
+    lista_otimizada.buscar(valor_inexistente)
+    tempo_otimizada = time.perf_counter() - inicio
+    print(f"Busca inexistente - Normal: {tempo_normal:.6f}s | Otimizada: {tempo_otimizada:.6f}s")
 
 # função simples para testar um conjunto
 def testar_conjunto(arquivo):
@@ -175,3 +295,5 @@ if __name__ == "__main__":
     print(f"Busca valor {valor_busca}:")
     print(f"Lista: {resultado_lista} em {tempo_lista:.6f}s")
     print(f"Árvore: {resultado_arvore} em {tempo_arvore:.6f}s")
+    
+
