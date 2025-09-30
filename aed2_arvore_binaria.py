@@ -87,70 +87,91 @@ class Arvore:
         return False
 
 
-def testar_conjunto(arquivo, nome):
+# função simples para testar um conjunto
+def testar_conjunto(arquivo):
     # lê o arquivo
     valores = []
-    try:
-        with open(arquivo, 'r') as f:
-            for linha in f:
-                valores.append(int(linha.strip()))
-    except:
-        print(f"Erro ao ler {arquivo}")
-        return
+    with open(arquivo, 'r') as f:
+        for linha in f:
+            valores.append(int(linha.strip()))
     
-    print(f"\n=== {nome} ({len(valores)} entradas) ===")
+    print(f"Testando {len(valores)} valores")
     
     # cria as estruturas
     lista = Lista()
     arvore = Arvore()
     
-    # construção
+    # teste construção
     inicio = time.perf_counter()
     for valor in valores:
         lista.inserir(valor)
-    tempo_lista = time.perf_counter() - inicio
-    print(f"Lista construção: {tempo_lista:.6f}s")
+    print(f"Lista construção: {time.perf_counter() - inicio:.6f}s")
     
     inicio = time.perf_counter()
     for valor in valores:
         arvore.inserir(valor)
-    tempo_arvore = time.perf_counter() - inicio
-    print(f"Árvore construção: {tempo_arvore:.6f}s")
+    print(f"Árvore construção: {time.perf_counter() - inicio:.6f}s")
     
-    # TESTE 1: Caso aleatório
-    valor_aleatorio = valores[len(valores)//2]
-    inicio = time.perf_counter()
-    lista.buscar(valor_aleatorio)
-    tempo_lista_aleatorio = time.perf_counter() - inicio
-    
-    inicio = time.perf_counter()
-    arvore.buscar(valor_aleatorio)
-    tempo_arvore_aleatorio = time.perf_counter() - inicio
-    print(f"Busca aleatória - Lista: {tempo_lista_aleatorio:.6f}s | Árvore: {tempo_arvore_aleatorio:.6f}s")
-    
-    # TESTE 2: Pior caso (último valor)
-    ultimo_valor = valores[-1]
-    inicio = time.perf_counter()
-    lista.buscar(ultimo_valor)
-    tempo_lista_ultimo = time.perf_counter() - inicio
-    
-    inicio = time.perf_counter()
-    arvore.buscar(ultimo_valor)
-    tempo_arvore_ultimo = time.perf_counter() - inicio
-    print(f"Busca último - Lista: {tempo_lista_ultimo:.6f}s | Árvore: {tempo_arvore_ultimo:.6f}s")
-    
-    # TESTE 3: Valor inexistente
+    # testes de busca
+    valor_meio = valores[len(valores)//2]
+    valor_ultimo = valores[-1]
     valor_inexistente = -999999
+    
+    # busca valor do meio
+    inicio = time.perf_counter()
+    lista.buscar(valor_meio)
+    tempo_lista = time.perf_counter() - inicio
+    
+    inicio = time.perf_counter()
+    arvore.buscar(valor_meio)
+    tempo_arvore = time.perf_counter() - inicio
+    print(f"Busca meio - Lista: {tempo_lista:.6f}s | Árvore: {tempo_arvore:.6f}s")
+    
+    # busca último valor
+    inicio = time.perf_counter()
+    lista.buscar(valor_ultimo)
+    tempo_lista = time.perf_counter() - inicio
+    
+    inicio = time.perf_counter()
+    arvore.buscar(valor_ultimo)
+    tempo_arvore = time.perf_counter() - inicio
+    print(f"Busca último - Lista: {tempo_lista:.6f}s | Árvore: {tempo_arvore:.6f}s")
+    
+    # busca valor inexistente
     inicio = time.perf_counter()
     lista.buscar(valor_inexistente)
-    tempo_lista_inexistente = time.perf_counter() - inicio
+    tempo_lista = time.perf_counter() - inicio
     
     inicio = time.perf_counter()
     arvore.buscar(valor_inexistente)
-    tempo_arvore_inexistente = time.perf_counter() - inicio
-    print(f"Busca inexistente - Lista: {tempo_lista_inexistente:.6f}s | Árvore: {tempo_arvore_inexistente:.6f}s")
+    tempo_arvore = time.perf_counter() - inicio
+    print(f"Busca inexistente - Lista: {tempo_lista:.6f}s | Árvore: {tempo_arvore:.6f}s")
 
+# exemplo de uso
 if __name__ == "__main__":
-    testar_conjunto("conjuntos/conjunto_pequeno.txt", "CONJUNTO PEQUENO")
-    testar_conjunto("conjuntos/conjunto_medio.txt", "CONJUNTO MEDIO")
-    testar_conjunto("conjuntos/conjunto_grande.txt", "CONJUNTO GRANDE")
+    print("Teste simples com dados pequenos")
+    random.seed(42)
+    valores_teste = [random.randint(1, 1000) for _ in range(1000)]
+    
+    lista = Lista()
+    arvore = Arvore()
+    
+    # construir
+    for valor in valores_teste:
+        lista.inserir(valor)
+        arvore.inserir(valor)
+    
+    # testar busca
+    valor_busca = valores_teste[500]
+    
+    inicio = time.perf_counter()
+    resultado_lista = lista.buscar(valor_busca)
+    tempo_lista = time.perf_counter() - inicio
+    
+    inicio = time.perf_counter()
+    resultado_arvore = arvore.buscar(valor_busca)
+    tempo_arvore = time.perf_counter() - inicio
+    
+    print(f"Busca valor {valor_busca}:")
+    print(f"Lista: {resultado_lista} em {tempo_lista:.6f}s")
+    print(f"Árvore: {resultado_arvore} em {tempo_arvore:.6f}s")

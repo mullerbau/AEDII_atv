@@ -1,6 +1,13 @@
 # Pasta de dados
 conjuntos/
-P01/
+
+# Arquivo da tarefa
+P01.txt
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
 
 # Arquivos temporários
 *.tmp
