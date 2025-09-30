@@ -18,6 +18,7 @@ class Lista:
                 return True  # retorna True se achou
         return False  # retorna False se não achou
 
+
 class Lista_otimizada:
     def __init__(self):
         # cria uma lista vazia com o nome elementos
@@ -78,7 +79,6 @@ class Lista_otimizada:
         return False
 
 
-
 class Node:
     def __init__(self, valor):
         # atribui o valor ao nó
@@ -106,18 +106,18 @@ class Arvore:
             # se o valor for menor, vai pra esquerda
             if valor < no_atual.valor:
                 if no_atual.esquerda is None:
-                    no_atual.esquerda = Node(valor)  # achou o valor
+                    no_atual.esquerda = Node(valor)
                     break
                 else:
-                    no_atual = no_atual.esquerda  # continua descendo
+                    no_atual = no_atual.esquerda
 
             # se o valor for maior, vai pra direita
             elif valor > no_atual.valor:
                 if no_atual.direita is None:
-                    no_atual.direita = Node(valor)  # ahcou o valor
+                    no_atual.direita = Node(valor)
                     break
                 else:
-                    no_atual = no_atual.direita  # continua descendo
+                    no_atual = no_atual.direita
 
             # se o valor já existe, não insere novamente
             else:
@@ -147,153 +147,81 @@ class Arvore:
         return False
 
 
-# função para testar lista otimizada vs lista normal
-def testar_listas(arquivo):
-    # lê o arquivo
-    valores = []
-    with open(arquivo, 'r') as f:
-        for linha in f:
-            valores.append(int(linha.strip()))
+# Exemplos de uso das classes
+if __name__ == "__main__":
+    print("=== EXEMPLOS DE USO ===")
     
-    print(f"Testando {len(valores)} valores")
+    # Exemplo 1: Lista Normal
+    print("\n1. Lista Normal:")
+    lista = Lista()
     
-    # cria as estruturas
-    lista_normal = Lista()
+    # Inserindo valores
+    for valor in [10, 5, 15, 3, 7]:
+        lista.inserir(valor)
+    print(f"Valores inseridos: [10, 5, 15, 3, 7]")
+    
+    # Buscando valores
+    print(f"Buscar 7: {lista.buscar(7)}")
+    print(f"Buscar 20: {lista.buscar(20)}")
+    
+    # Exemplo 2: Lista Otimizada
+    print("\n2. Lista Otimizada:")
     lista_otimizada = Lista_otimizada()
     
-    # teste construção
-    inicio = time.perf_counter()
-    for valor in valores:
-        lista_normal.inserir(valor)
-    print(f"Lista normal construção: {time.perf_counter() - inicio:.6f}s")
-    
-    inicio = time.perf_counter()
-    for valor in valores:
+    # Inserindo valores
+    for valor in [10, 5, 15, 3, 7]:
         lista_otimizada.inserir(valor)
-    print(f"Lista otimizada construção: {time.perf_counter() - inicio:.6f}s")
+    print(f"Valores inseridos: [10, 5, 15, 3, 7]")
     
-    # testes de busca
-    valor_meio = valores[len(valores)//2]
-    valor_ultimo = valores[-1]
-    valor_inexistente = -999999
+    # Primeira busca (ordena automaticamente)
+    print(f"Primeira busca 7: {lista_otimizada.buscar(7)}")
+    print(f"Segunda busca 20: {lista_otimizada.buscar(20)}")
     
-    # busca valor do meio
-    inicio = time.perf_counter()
-    lista_normal.buscar(valor_meio)
-    tempo_normal = time.perf_counter() - inicio
-    
-    inicio = time.perf_counter()
-    lista_otimizada.buscar(valor_meio)
-    tempo_otimizada = time.perf_counter() - inicio
-    print(f"Busca meio - Normal: {tempo_normal:.6f}s | Otimizada: {tempo_otimizada:.6f}s")
-    
-    # busca último valor
-    inicio = time.perf_counter()
-    lista_normal.buscar(valor_ultimo)
-    tempo_normal = time.perf_counter() - inicio
-    
-    inicio = time.perf_counter()
-    lista_otimizada.buscar(valor_ultimo)
-    tempo_otimizada = time.perf_counter() - inicio
-    print(f"Busca último - Normal: {tempo_normal:.6f}s | Otimizada: {tempo_otimizada:.6f}s")
-    
-    # busca valor inexistente
-    inicio = time.perf_counter()
-    lista_normal.buscar(valor_inexistente)
-    tempo_normal = time.perf_counter() - inicio
-    
-    inicio = time.perf_counter()
-    lista_otimizada.buscar(valor_inexistente)
-    tempo_otimizada = time.perf_counter() - inicio
-    print(f"Busca inexistente - Normal: {tempo_normal:.6f}s | Otimizada: {tempo_otimizada:.6f}s")
-
-# função simples para testar um conjunto
-def testar_conjunto(arquivo):
-    # lê o arquivo
-    valores = []
-    with open(arquivo, 'r') as f:
-        for linha in f:
-            valores.append(int(linha.strip()))
-    
-    print(f"Testando {len(valores)} valores")
-    
-    # cria as estruturas
-    lista = Lista()
+    # Exemplo 3: Árvore Binária
+    print("\n3. Árvore Binária:")
     arvore = Arvore()
     
-    # teste construção
-    inicio = time.perf_counter()
-    for valor in valores:
-        lista.inserir(valor)
-    print(f"Lista construção: {time.perf_counter() - inicio:.6f}s")
-    
-    inicio = time.perf_counter()
-    for valor in valores:
+    # Inserindo valores
+    for valor in [10, 5, 15, 3, 7, 12, 18]:
         arvore.inserir(valor)
-    print(f"Árvore construção: {time.perf_counter() - inicio:.6f}s")
+    print(f"Valores inseridos: [10, 5, 15, 3, 7, 12, 18]")
     
-    # testes de busca
-    valor_meio = valores[len(valores)//2]
-    valor_ultimo = valores[-1]
-    valor_inexistente = -999999
+    # Buscando valores
+    print(f"Buscar 12: {arvore.buscar(12)}")
+    print(f"Buscar 25: {arvore.buscar(25)}")
     
-    # busca valor do meio
-    inicio = time.perf_counter()
-    lista.buscar(valor_meio)
-    tempo_lista = time.perf_counter() - inicio
-    
-    inicio = time.perf_counter()
-    arvore.buscar(valor_meio)
-    tempo_arvore = time.perf_counter() - inicio
-    print(f"Busca meio - Lista: {tempo_lista:.6f}s | Árvore: {tempo_arvore:.6f}s")
-    
-    # busca último valor
-    inicio = time.perf_counter()
-    lista.buscar(valor_ultimo)
-    tempo_lista = time.perf_counter() - inicio
-    
-    inicio = time.perf_counter()
-    arvore.buscar(valor_ultimo)
-    tempo_arvore = time.perf_counter() - inicio
-    print(f"Busca último - Lista: {tempo_lista:.6f}s | Árvore: {tempo_arvore:.6f}s")
-    
-    # busca valor inexistente
-    inicio = time.perf_counter()
-    lista.buscar(valor_inexistente)
-    tempo_lista = time.perf_counter() - inicio
-    
-    inicio = time.perf_counter()
-    arvore.buscar(valor_inexistente)
-    tempo_arvore = time.perf_counter() - inicio
-    print(f"Busca inexistente - Lista: {tempo_lista:.6f}s | Árvore: {tempo_arvore:.6f}s")
-
-# exemplo de uso
-if __name__ == "__main__":
-    print("Teste simples com dados pequenos")
+    # Exemplo 4: Comparação de Performance
+    print("\n4. Teste de Performance (1000 valores):")
     random.seed(42)
     valores_teste = [random.randint(1, 1000) for _ in range(1000)]
     
-    lista = Lista()
-    arvore = Arvore()
-    
-    # construir
+    # Lista
+    lista_teste = Lista()
+    inicio = time.perf_counter()
     for valor in valores_teste:
-        lista.inserir(valor)
-        arvore.inserir(valor)
+        lista_teste.inserir(valor)
+    tempo_lista = time.perf_counter() - inicio
     
-    # testar busca
+    # Árvore
+    arvore_teste = Arvore()
+    inicio = time.perf_counter()
+    for valor in valores_teste:
+        arvore_teste.inserir(valor)
+    tempo_arvore = time.perf_counter() - inicio
+    
+    print(f"Construção Lista: {tempo_lista:.6f}s")
+    print(f"Construção Árvore: {tempo_arvore:.6f}s")
+    
+    # Teste de busca
     valor_busca = valores_teste[500]
     
     inicio = time.perf_counter()
-    resultado_lista = lista.buscar(valor_busca)
-    tempo_lista = time.perf_counter() - inicio
+    resultado_lista = lista_teste.buscar(valor_busca)
+    tempo_busca_lista = time.perf_counter() - inicio
     
     inicio = time.perf_counter()
-    resultado_arvore = arvore.buscar(valor_busca)
-    tempo_arvore = time.perf_counter() - inicio
+    resultado_arvore = arvore_teste.buscar(valor_busca)
+    tempo_busca_arvore = time.perf_counter() - inicio
     
-    print(f"Busca valor {valor_busca}:")
-    print(f"Lista: {resultado_lista} em {tempo_lista:.6f}s")
-    print(f"Árvore: {resultado_arvore} em {tempo_arvore:.6f}s")
-    
-
+    print(f"Busca Lista: {tempo_busca_lista:.6f}s (resultado: {resultado_lista})")
+    print(f"Busca Árvore: {tempo_busca_arvore:.6f}s (resultado: {resultado_arvore})")
